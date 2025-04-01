@@ -3,7 +3,6 @@ import { env } from "~/env";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { hydrateLangInApiUrl } from "~/server/api/helpers";
-import { cookies, headers } from "next/headers";
 
 export interface Product {
   id: number;
@@ -14,24 +13,24 @@ export interface Product {
   description: string;
   code: string;
   catalogs: unknown[];
-  partition_catalog: Record<string, any>;
-  brand: Record<string, any>;
-  picture: Record<string, any>;
-  default_picture: Record<string, any>;
+  partition_catalog: Record<string, unknown>;
+  brand: Record<string, unknown>;
+  picture: Record<string, unknown>;
+  default_picture: Record<string, unknown>;
   extra_pictures: unknown[];
   num_variants: number;
-  rating: Record<string, any>;
-  un_classifications: Record<string, any>;
-  configurator: Record<string, any>;
+  rating: Record<string, unknown>;
+  un_classifications: Record<string, unknown>;
+  configurator: Record<string, unknown>;
   featured_attributes: [];
-  attributes: Record<string, any>;
+  attributes: Record<string, unknown>;
   tags: unknown[];
   trees: unknown[];
-  status: Record<string, any>;
-  prices: Record<string, any>;
-  stock: Record<string, any>;
-  ordering: Record<string, any>;
-  shipping: Record<string, any>;
+  status: Record<string, unknown>;
+  prices: Record<string, string | number>;
+  stock: Record<string, unknown>;
+  ordering: Record<string, unknown>;
+  shipping: Record<string, unknown>;
   assets: unknown[];
   page_link: string;
   analytics_tree_path: unknown[];
@@ -71,9 +70,9 @@ export const productsRouter = createTRPCRouter({
 
       const req = await fetch(`${URL}`, { cache: "force-cache" });
 
-      const response = await req.json();
+      const response = await req.json() as Product;
 
-      return response as Product;
+      return response;
     }),
   getProductsByTree: publicProcedure
     .input(z.object({ tree_id: z.number() }))
@@ -86,8 +85,8 @@ export const productsRouter = createTRPCRouter({
 
       const req = await fetch(`${URL}?${query.toString()}`, { cache: "force-cache" });
 
-      const response = await req.json();
+      const response = await req.json() as TreeSearchResponse;
 
-      return response as TreeSearchResponse;
+      return response;
     }),
 });

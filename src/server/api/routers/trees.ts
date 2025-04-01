@@ -24,9 +24,9 @@ export const treesRouter = createTRPCRouter({
       const URL = `${hydrateLangInApiUrl(env.NEXT_PUBLIC_API_ROOT)}/tree/${input.id}`;
 
       const res = await fetch(URL, { cache: "force-cache" });
-      const tree = await res.json();
+      const tree = await res.json() as Tree;
 
-      return tree.children as Tree[];
+      return tree.children;
     }),
   getTreeData: publicProcedure
     .input(
@@ -40,12 +40,12 @@ export const treesRouter = createTRPCRouter({
       const URL = `${hydrateLangInApiUrl(env.NEXT_PUBLIC_API_ROOT)}/tree/${input.id}`;
 
       const res = await fetch(URL, { cache: "force-cache" });
-      const tree = await res.json();
+      const tree = await res.json() as Tree & { message?: string};
 
       if (tree.message) {
         return null;
       }
 
-      return tree as Tree;
+      return tree;
     }),
 });
