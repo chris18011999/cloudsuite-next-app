@@ -2,7 +2,7 @@ import { z } from "zod";
 import { env } from "~/env";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { hydrateLangInApiUrl } from "~/server/api/helpers";
+import { hydrateLangInApiUrl } from "~/server/helpers";
 
 export interface Product {
   id: number;

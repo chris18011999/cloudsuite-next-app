@@ -6,7 +6,6 @@ export default async function ProductDetailPage({
 }: {
   params: Promise<{ product_id: string; product_slug: string }>;
 }) {
-
   const { product_id } = await params;
   const productData = await api.products.getProductById({ id: parseInt(product_id) });
 

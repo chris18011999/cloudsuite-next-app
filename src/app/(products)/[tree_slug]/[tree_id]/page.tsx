@@ -14,8 +14,6 @@ export default async function TreePage({
 
   if (!treeData) notFound();
 
-  console.log(tree_id);
-
   const [{ products }] = await Promise.all([
     api.products.getProductsByTree({
       tree_id: parseInt(tree_id),
@@ -26,9 +24,9 @@ export default async function TreePage({
     <div className="flex gap-3">
       <div className="w-1/3"></div>
       <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3">
-        {products.map((product) => {
-          return <ProductCard key={product.id} product={product} />;
-        })}
+        {products.map((product) => (
+          <ProductCard product={product} key={product.id} />
+        ))}
       </div>
     </div>
   );

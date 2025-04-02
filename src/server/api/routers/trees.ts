@@ -2,13 +2,13 @@ import { z } from "zod";
 import { env } from "~/env";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { hydrateLangInApiUrl } from "~/server/api/helpers";
+import { hydrateLangInApiUrl } from "~/server/helpers";
 
 interface Tree {
   id: number;
   name: string;
   slug: string;
-  children: Tree[];
+  children?: Tree[];
 }
 
 export const treesRouter = createTRPCRouter({
@@ -16,17 +16,23 @@ export const treesRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.number(),
+        depth: z.number().optional(),
       }),
     )
     .query(async ({ input }) => {
       if (!input.id) throw new Error("Tree ID is required");
 
-      const URL = `${hydrateLangInApiUrl(env.NEXT_PUBLIC_API_ROOT)}/tree/${input.id}`;
+      let URL = `${hydrateLangInApiUrl(env.NEXT_PUBLIC_API_ROOT)}/tree/?tree_id=${input.id}`;
+      if (input.depth !== null && input.depth !== undefined) {
+        URL += `&depth=${input.depth}`;
+      }
+
+      console.log(`[TRPC] Fetching tree data from ${URL}`);
 
       const res = await fetch(URL, { cache: "force-cache" });
-      const tree = await res.json() as Tree;
+      const trees = await res.json() as Tree[];
 
-      return tree.children;
+      return trees;
     }),
   getTreeData: publicProcedure
     .input(
