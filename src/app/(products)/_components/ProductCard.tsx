@@ -16,7 +16,7 @@ export function ProductCard({
   showVariants = true,
 }: {
   product: Product;
-  showVariants: boolean;
+  showVariants?: boolean;
 }) {
   return (
     <Link
