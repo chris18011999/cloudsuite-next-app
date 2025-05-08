@@ -33,16 +33,19 @@ export default async function TreePage({
   ]);
 
   return (
-    <div className="flex gap-3">
-      <div className="w-1/3">
-        <div className="rounded-sm border border-slate-300 p-4">
-          {"Here will be the filters"}
+    <div>
+      <h1 className="font-bold text-xl">{treeData.name}</h1>
+      <div className="flex gap-3 mt-4">
+        <div className="w-1/3">
+          <div className="rounded-sm border border-slate-300 p-4">
+            {"Here will be the filters"}
+          </div>
         </div>
-      </div>
-      <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3">
-        {products.map((product) => (
-          <ProductCard product={product} key={product.id} />
-        ))}
+        <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3">
+          {products.map((product) => (
+            <ProductCard product={product} key={product.id} />
+          ))}
+        </div>
       </div>
     </div>
   );
