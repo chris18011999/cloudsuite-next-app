@@ -38,12 +38,13 @@ export const treesRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.number(),
+        page: z.number().optional().default(1),
       }),
     )
     .query(async ({ input }) => {
       if (!input.id) throw new Error("Tree ID is required");
 
-      const URL = `${hydrateLangInApiUrl(env.NEXT_PUBLIC_API_ROOT)}/tree/${input.id}`;
+      const URL = `${hydrateLangInApiUrl(env.NEXT_PUBLIC_API_ROOT)}/tree/${input.id}?page=${input.page}`;
 
       const res = await fetch(URL, { cache: "force-cache" });
       const tree = await res.json() as Tree & { message?: string};

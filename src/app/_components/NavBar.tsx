@@ -18,7 +18,7 @@ export default async function NavBar() {
   const imageHeight = (width: number) => 86 * (width / 544); // maintain aspect ratio with width of 300
 
   return (
-    <NavigationMenu className="flex w-screen max-w-full flex-1 content-center items-center">
+    <NavigationMenu className="sticky top-0 mx-auto flex w-7xl max-w-screen flex-1 justify-between items-center bg-white py-4">
       <NavigationMenuList className="flex flex-1 gap-4 py-2">
         <Link href="/">
           <Image

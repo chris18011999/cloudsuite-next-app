@@ -15,7 +15,7 @@ export function ProductCard({ product }: { product: Product }) {
     <Link
       prefetch={true}
       href={`/p/${product.slug}/${product.id}`}
-      className="block overflow-hidden rounded-sm border-slate-300 bg-gray-900 text-white transition-colors hover:border-slate-500"
+      className="block overflow-hidden rounded-sm border border-slate-300 transition-colors hover:border-slate-500"
     >
       <img
         className="mx-auto h-[250px] w-[325px] object-contain"

@@ -70,22 +70,31 @@ export const productsRouter = createTRPCRouter({
 
       const req = await fetch(`${URL}`, { cache: "force-cache" });
 
-      const response = await req.json() as Product;
+      const response = (await req.json()) as Product;
 
       return response;
     }),
   getProductsByTree: publicProcedure
-    .input(z.object({ tree_id: z.number() }))
+    .input(
+      z.object({ tree_id: z.number(), page: z.number().optional().default(1) }),
+    )
     .query(async ({ input }) => {
       const URL = `${hydrateLangInApiUrl(env.NEXT_PUBLIC_API_ROOT)}/search/products/`;
 
       // Map all values to strings because search params should always be strings
-      const a = Object.entries(input).map(([k, v]) => ({ [k]: `${v}` }));
-      const query = new URLSearchParams(...a);
+      // change below to reduce()
+      const a = Object.entries(input).reduce((acc, [k, v]) => {
+        acc.push([k, `${v}`]);
+        return acc;
+      }, [] as [string, string][]);
+      const query = new URLSearchParams(a);
 
-      const req = await fetch(`${URL}?${query.toString()}`, { cache: "force-cache" });
 
-      const response = await req.json() as TreeSearchResponse;
+      const req = await fetch(`${URL}?${query.toString()}`, {
+        cache: "force-cache",
+      });
+
+      const response = (await req.json()) as TreeSearchResponse;
 
       return response;
     }),
