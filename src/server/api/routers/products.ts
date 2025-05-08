@@ -4,6 +4,23 @@ import { env } from "~/env";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { hydrateLangInApiUrl } from "~/server/helpers";
 
+export interface ProductVariant {
+  id: number;
+  name: string;
+  type: string;
+  attributes:
+    {
+      id: number;
+      name: string;
+      value: string;
+      value_id: 0;
+      picture: string;
+      css_color: string;
+      display_mode: string;
+    }[]
+  picture: string;
+}
+
 export interface Product {
   id: number;
   slug: string;
@@ -34,7 +51,7 @@ export interface Product {
   assets: unknown[];
   page_link: string;
   analytics_tree_path: unknown[];
-  variants: unknown[];
+  variants: ProductVariant[];
 }
 
 interface Paginator {
@@ -83,12 +100,14 @@ export const productsRouter = createTRPCRouter({
 
       // Map all values to strings because search params should always be strings
       // change below to reduce()
-      const a = Object.entries(input).reduce((acc, [k, v]) => {
-        acc.push([k, `${v}`]);
-        return acc;
-      }, [] as [string, string][]);
+      const a = Object.entries(input).reduce(
+        (acc, [k, v]) => {
+          acc.push([k, `${v}`]);
+          return acc;
+        },
+        [] as [string, string][],
+      );
       const query = new URLSearchParams(a);
-
 
       const req = await fetch(`${URL}?${query.toString()}`, {
         cache: "force-cache",
