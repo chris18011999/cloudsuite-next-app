@@ -1,3 +1,11 @@
+import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "~/components/ui/tooltip";
+import { env } from "~/env";
 import type { ProductVariant } from "~/server/api/routers/products";
 
 export const ProductVariants = ({
@@ -7,14 +15,28 @@ export const ProductVariants = ({
 }) => {
   return (
     <div className="mt-2 flex flex-wrap gap-1">
-      {variants.map((variant) => (
-        <span
-          key={variant.id}
-          className="rounded-sm bg-slate-200 px-2 py-1 text-sm font-semibold text-slate-700"
-        >
-          {variant.name}
-        </span>
-      ))}
+      {variants
+        .filter((v) => !!v.picture)
+        .map((variant) => (
+          <TooltipProvider key={variant.id}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href={`/p/product/${variant.id}`}
+                  className="cursor-pointer overflow-hidden rounded-xs border border-slate-300 bg-slate-200 transition-colors hover:border-slate-500 hover:bg-slate-300"
+                >
+                  <img
+                    src={`${env.NEXT_PUBLIC_IMAGE_ROOT}${variant.picture.mini}`}
+                    alt={variant.name}
+                    className="pointer-events-none block size-6 object-cover"
+                  />
+                </Link>
+              </TooltipTrigger>
+
+              <TooltipContent>{variant.name}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ))}
     </div>
   );
 };

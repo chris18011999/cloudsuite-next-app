@@ -18,7 +18,7 @@ export interface ProductVariant {
       css_color: string;
       display_mode: string;
     }[]
-  picture: string;
+  picture: Record<'src' | 'mini' | 'small' | 'normal' | 'large', string>;
 }
 
 export interface Product {
